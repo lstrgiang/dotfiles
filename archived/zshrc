@@ -379,6 +379,5 @@ source ~/.dotfiles/z.sh
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 # }}}
-# vim: foldmethod=marker
 export PATH="/usr/local/opt/icu4c/bin:$PATH"
 export PATH="/usr/local/opt/icu4c/sbin:$PATH"

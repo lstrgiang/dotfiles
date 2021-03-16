@@ -59,22 +59,13 @@ let g:indentLine_setColors = 0                                                  
 " Syntastic---------------------------------------------------------------
 let g:syntastic_always_populate_loc_list = 1                                            " Allow syntastic to populate loc list
 let g:syntastic_auto_loc_list = 1                                                       " Auto loc list 
-let g:syntastic_php_checkers = ['php',  'phpmd']                                        " Checker plugins
-let g:syntastic_php_phpcs_exec = '/home/giangle/.composer/vendor/bin/php-cs-fixer'     " Path to exec phpcs
-let g:syntastic_php_phpcs_args = '--standard=psr2'                                      " Basic standard
-let g:syntastic_php_phpmd_exec = '/home/giangle/.composer/vendor/bin/phpmd'     " phpmd executing path
-let g:syntastic_php_phpmd_post_args = 'cleancode,design,unusedcode'                     " Arguments for phpmd
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_check_on_w = 0
 let g:syntastic_mode_map = { 'mode': 'passive',
                             \ 'active_filetypes': ['python'],
-                            \ 'passive_filetypes': ['html', 'javascript', 'php',' vue'] }
+                            \ 'passive_filetypes': ['html', 'javascript',' vue'] }
 let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_java_checkers = ['checkstyle']
-let g:syntastic_java_checkstyle_classpath = '/home/giangle/checkstyle-8.19-all.jar'
-let g:syntastic_java_checkstyle_conf_file = '/home/giangle/.checkstyle.xml'
-
 
 inoremap <C-P> <C-x><C-o>|                                                      " Trigger OmniComp
 nnoremap ; :|                                                                   " Map ; as :
@@ -99,7 +90,6 @@ map <S-.> <C-}>|                                                                
 imap jj <Esc>|                                                                  " jj as escape
 imap hh <Esc>|                                                                  " hh as escape
 imap kk <Esc>|                                                                  " kk as escape
-let g:ctrlp_map = '<leader>f'|                                                  " Toggle ctrlp
 "map <C-c> :tabnew<cr>
 "map <C-x> :tabclose<cr>
 "map <C-n> gt
@@ -116,11 +106,7 @@ map <leader>sc :s#_\(\l\)#\u\1#g<cr>
 " }}}
 noremap <space><space> :NERDTreeToggle<cr>|                                     " Toggle NERDTree
 nmap <leader>tb :TableModeToggle<cr>                                            " Toggle table mode
-nnoremap <silent><leader>pcd :call PhpCsFixerFixDirectory()<CR>                 " Toggle phpcs fixer for the current directory
-nnoremap <silent><leader>pcf :call PhpCsFixerFixFile()<CR>                      " Toggle phpcs fixer for the current file
-map <leader>b :CtrlPBuffer<CR>|                                                 " Toggle buffer
 nmap <F8> :TagbarToggle<CR>|                                                    " Toggle tagbar
-"noremap <C-l> :Phplint<CR></CR>|                                                " Toggle phplint
 nmap gm :LivedownToggle<CR>|                                                    " Toggle livedown
 nmap <leader>cq :SyntasticCheck<CR>|                                            " Toggle check syntastic
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -137,9 +123,8 @@ augroup vimrc_autocmd
   autocmd!
   autocmd filetype html,xml set listchars-=tab:>.
   autocmd FileType java map <leader>ca :call JCommentWriter()<CR> 
-  autocmd FileType php map <leader>ca :call JCommentWriter()<CR> 
 au BufRead,BufNewFile *.md setlocal textwidth=80
-  autocmd FileType css,javascript,javascript.jsx,javascript.vue,yml,yaml setlocal tabstop=2 shiftwidth=2
+  autocmd FileType css,javascript,javascript.jsx,javascript.ts,javascript.tsx,javascript.vue,yml,yaml setlocal tabstop=2 shiftwidth=2
   autocmd FileType vue setlocal tabstop=2 shiftwidth=2
 autocmd FileType gitcommit set colorcolumn=73
 augroup END
@@ -157,7 +142,6 @@ call plug#begin('~/.vim/plugged')
 "Plug 'nightsense/office'                                           " Support office-dark Colorscheme
 "Plug 'easymotion/vim-easymotion'
 "Plug 'itchyny/calendar.vim'
-"Plug 'joonty/vim-phpqa'
 "Plug 'tbabej/taskwiki'                                             " Combine taskwarrior and vimwiki
 "Plug 'w0rp/ale'
 "Plug 'leafgarland/typescript-vim'
@@ -173,13 +157,12 @@ Plug 'scrooloose/nerdcommenter'                                     " Fast comme
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}                " File management
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}                    " Tagged function and variables
 Plug 'jiangmiao/auto-pairs'                                         " Automatically create pair 
-Plug 'kien/ctrlp.vim'                                               " Fuzzy finder
-Plug 'joonty/vdebug', {'for': 'php'}                                " Debug plugin for php, python and ruby
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'                                           " Quickly surround text with tags, signs
 Plug 'airblade/vim-gitgutter'                                       " Display difference in line
 Plug 'Shougo/vimproc.vim'                                           " Forgot
 Plug 'itchyny/calendar.vim'                                         " Calendar for vim
-Plug 'stephpy/vim-php-cs-fixer', {'for': 'php'}                     " PHP Coding Style Fixer
 Plug 'mxw/vim-jsx', {'for': ['js', 'jsx', 'html']}
 "Plug 'vimwiki/vimwiki'                                              " Personal wiki system
 "Plug 'tbabej/taskwiki'
@@ -187,10 +170,13 @@ Plug 'dhruvasagar/vim-table-mode', {'on':'TableModeToggle'}
 Plug 'tpope/vim-fugitive'                                           " Fugitive git
 Plug 'christoomey/vim-conflicted', {'on': 'Conflicted'}             " Display and resolve conflict
 Plug 'vim-syntastic/syntastic', {'on': 'SyntasticCheck'}            " Asyn linting tool
-Plug 'pangloss/vim-javascript', {'for': ['js', 'jsx', 'html']}
 Plug 'vim-scripts/AutoComplPop'
 "Plug 'SirVer/ultisnips'                                             " UltiSnip for snippets
+Plug 'leafgarland/typescript-vim', {'for': ['html', 'ts', 'tsx']} " TypeScript syntax
+Plug 'pangloss/vim-javascript', {'for': ['js', 'jsx', 'html', 'ts', 'tsx']}
+Plug 'maxmellon/vim-jsx-pretty', {'for': ['js', 'jsx', 'html', 'ts', 'tsx']}   " JS and JSX syntax
 Plug 'honza/vim-snippets'
+Plug 'chrisbra/csv.vim'
 Plug 'rking/ag.vim', {'on': 'Ag'}
 Plug 'shime/vim-livedown'
 Plug 'nvie/vim-flake8'                                          " Flake8 for python
@@ -214,19 +200,13 @@ let g:indent_guides_start_level = 2
 " ------ Vim AG configuration
 let g:ag_working_path_mode="r"
 
-" ------ CtrlP configuration
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+" fzf
+nmap <silent> <C-p> :Files<CR>
+nmap <silent> <C-f> :GFiles<CR>
+nmap <silent> <C-b> :Buffers<CR>
 
-" PHP CS Fixer Configuration
-let g:php_cs_fixer_path = "/home/giangle/.composer/vendor/bin/php-cs-fixer"
-"let g:php_cs_fixer_level = "psr2"
-"let g:php_cs_fixer_config_file = '/home/giangle/.php_cs' 
-let g:php_cs_fixer_rules = "@PSR2"
-let g:php_cs_fixer_php_path = "/usr/bin/php" 
-let g:php_cs_fixer_enable_default_mapping = 1
-let g:php_cs_fixer_dry_run = 0
-let g:php_cs_fixer_verbose = 1
-"let g:php_cs_fixer_config = //"default"
+" ------ CtrlP configuration
+"let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " ---- tig-explorer
 " open tig with current file
@@ -252,29 +232,13 @@ let g:UltiSnipsSnippetDirectories=['~/.vim/utilsnips_rc/']
 let g:UltiSnipsEditSplit="vertical"
 
 let g:taskwiki_markup_syntax = 'markdown'
-" ------- VDebug Configuration
-let g:vdebug_options = {
-\ 'path_maps': {
-\   "/GitHub":"/ozv",
-\   "/vagrant/":"/home/giangle/Development/pav/ozv/comic"
-\ }
-\}
-let g:vdebug_options["port"] = 9000
-let g:vdebug_options["break_on_open"] = 0
-
 " ---- Java Autocomplete
 autocmd FileType java setlocal omnifunc=javacomplete#Complete
+autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
 " Vim markdown preview Configuration
 
 let vim_markdown_preview_github=1
 let vim_markdown_preview_hotkey='<C-m>'
-
-" ALE PHP
-let g:ale_linters = {
-\   'php': ['php'],
-\}
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 0
 
 " ---- NERDTRee 
 let NERDTreeIgnore = ['\.pyc$']
@@ -311,7 +275,13 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
-inoremap <silent><expr> <Tab>
+let g:coc_global_extensions = [ 'coc-tsserver' ]
+inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<Tab>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
