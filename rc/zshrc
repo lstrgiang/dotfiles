@@ -7,8 +7,7 @@ export ZSH=$HOME/.oh-my-zsh
 export GOPATH=$HOME/go
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH=$GOPATH/bin:$PATH
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+export PATH=$PATH:/Users/giangle/.cargo/bin
 source $ZSH/oh-my-zsh.sh
 
 for f in $DOTFILE/scripts/*.sh; do source $f; done
@@ -26,11 +25,11 @@ if [ -f '/Users/giangle/.gcloud/path.zsh.inc' ]; then . '/Users/giangle/.gcloud/
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/giangle/.gcloud/completion.zsh.inc' ]; then . '/Users/giangle/.gcloud/completion.zsh.inc'; fi
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+#
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 [ -f ~/.gcloud-aliasrc ] && source ~/.gcloud-aliasrc
 export GOOGLE_APPLICATION_CREDENTIALS=~/.google-auth/compute-instances.json
@@ -70,11 +69,21 @@ alias term="export TERM=vt100"
 
 alias ibrew='arch -x86_64 /usr/local/bin/brew'
 alias mbrew='arch -arm64e /opt/homebrew/bin/brew'
-alias brew="arch -arm64e /opt/homebrew/bin/brew"
 
 alias vim="/opt/homebrew/bin/vim"
 alias cssh="vim ~/.ssh/config"
 alias kssh="kitty +kitten ssh"
 
+alias imgsee="kitty +kitten icat $1"
+alias imgsize="file $1"
 
+alias tasks="todoist list"
+timezsh() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
+}
 
+eval "$(fnm env)"
+
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
+export KUBECONFIG=$HOME/.kube/config

@@ -52,8 +52,8 @@ highlight link javaDocTags PreProc
 
 " CtrlP-------------------------------------------------------------------------
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|env\|venv'                       " CtrlP ignore files
-" AutoComplPop------------------------------------------------------------------
-let g:acp_behaviorKeywordCommand = "\<C-n>"                                     " AutoComplPop key press
+ "AutoComplPop------------------------------------------------------------------
+"let g:acp_behaviorKeywordCommand = "\<C-n>"                                     " AutoComplPop key press
 " Indent Line-------------------------------------------------------------------
 let g:indentLine_setColors = 0                                                  " Set color for indent line
 " Syntastic---------------------------------------------------------------
@@ -79,6 +79,7 @@ nmap <leader>w :w!<cr>|                                                         
 map <silent> <leader><cr> :noh<cr>|                                             " Remove all highlight
 nmap <silent> <leader>ev :e $MYVIMRC<CR>|                                       " Edit my vimrc file
 nmap <silent> <leader>sv :so $MYVIMRC<CR>|                                      " Source my vimrc file
+nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 nnoremap + /\$\w\+_<CR>|                                                        " Find snakecase in php
 nnoremap _ f_x~|                                                                " Convert snakecase to camel
 nnoremap <leader>stm :s#_\(\l\)#\u\1#g<CR>|                                     " Convert all snakecase to camel
@@ -105,6 +106,7 @@ map <leader>gt :!tig <cr>
 map <leader>sc :s#_\(\l\)#\u\1#g<cr>
 " }}}
 noremap <space><space> :NERDTreeToggle<cr>|                                     " Toggle NERDTree
+nnoremap <M-f> :NERDTreeFind<CR> " NERD tree find"
 nmap <leader>tb :TableModeToggle<cr>                                            " Toggle table mode
 nmap <F8> :TagbarToggle<CR>|                                                    " Toggle tagbar
 nmap gm :LivedownToggle<CR>|                                                    " Toggle livedown
@@ -126,34 +128,21 @@ augroup vimrc_autocmd
 au BufRead,BufNewFile *.md setlocal textwidth=80
   autocmd FileType css,javascript,javascript.jsx,javascript.ts,javascript.tsx,javascript.vue,yml,yaml setlocal tabstop=2 shiftwidth=2
   autocmd FileType vue setlocal tabstop=2 shiftwidth=2
-autocmd FileType gitcommit set colorcolumn=73
+  autocmd FileType gitcommit set colorcolumn=73
 augroup END
 " Plugin Installation
 "set rtp+=~/.vim/bundle/Vundle.vim
 call plug#begin('~/.vim/plugged')
 "Plugin 'VundleVim/Vundle.vim'
 
-" ----- Unused plugins
-"Plug 'xolox/vim-misc'
-"Plug 'xolox/vim-notes'
-"Plug 'vim-airline/vim-airline-themes'
-"Plug 'bling/vim-airline'
-"Plug 'Quramy/tsuquyomi'
-"Plug 'nightsense/office'                                           " Support office-dark Colorscheme
-"Plug 'easymotion/vim-easymotion'
-"Plug 'itchyny/calendar.vim'
-"Plug 'tbabej/taskwiki'                                             " Combine taskwarrior and vimwiki
-"Plug 'w0rp/ale'
-"Plug 'leafgarland/typescript-vim'
-"Plug 'junegunn/goyo.vim'
-"Plug 'junegunn/limelight.vim'
-"Plug 'gregsexton/gitv', {'on': ['Gitv']}
-"Plug 'mzlogin/vim-markdown-toc'
-"Plug 'craigemery/vim-autotag'
-"Plug 'benmills/vimux'
-
 " ------ Installed plugins
+Plug 'heavenshell/vim-jsdoc', { 
+  \ 'for': ['javascript', 'javascript.jsx','typescript'], 
+  \ 'do': 'make install'
+\}
+Plug 'vim-scripts/AutoComplPop' 
 Plug 'scrooloose/nerdcommenter'                                     " Fast commenter 
+Plug 'nicwest/vim-http', {'for': ['http']}                          " Vim HTTP
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}                " File management
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}                    " Tagged function and variables
 Plug 'jiangmiao/auto-pairs'                                         " Automatically create pair 
@@ -164,14 +153,10 @@ Plug 'airblade/vim-gitgutter'                                       " Display di
 Plug 'Shougo/vimproc.vim'                                           " Forgot
 Plug 'itchyny/calendar.vim'                                         " Calendar for vim
 Plug 'mxw/vim-jsx', {'for': ['js', 'jsx', 'html']}
-"Plug 'vimwiki/vimwiki'                                              " Personal wiki system
-"Plug 'tbabej/taskwiki'
 Plug 'dhruvasagar/vim-table-mode', {'on':'TableModeToggle'}
 Plug 'tpope/vim-fugitive'                                           " Fugitive git
 Plug 'christoomey/vim-conflicted', {'on': 'Conflicted'}             " Display and resolve conflict
 Plug 'vim-syntastic/syntastic', {'on': 'SyntasticCheck'}            " Asyn linting tool
-Plug 'vim-scripts/AutoComplPop'
-"Plug 'SirVer/ultisnips'                                             " UltiSnip for snippets
 Plug 'leafgarland/typescript-vim', {'for': ['html', 'ts', 'tsx']} " TypeScript syntax
 Plug 'pangloss/vim-javascript', {'for': ['js', 'jsx', 'html', 'ts', 'tsx']}
 Plug 'maxmellon/vim-jsx-pretty', {'for': ['js', 'jsx', 'html', 'ts', 'tsx']}   " JS and JSX syntax
@@ -180,8 +165,6 @@ Plug 'chrisbra/csv.vim'
 Plug 'rking/ag.vim', {'on': 'Ag'}
 Plug 'shime/vim-livedown'
 Plug 'nvie/vim-flake8'                                          " Flake8 for python
-"Plug 'christoomey/vim-tmux-navigator'                           " Navigator in vim with tmux
-"Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'junegunn/gv.vim'
 Plug 'nathanaelkane/vim-indent-guides'
@@ -189,7 +172,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'iberianpig/tig-explorer.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'fatih/vim-go'
-"Plug 'dbakker/vim-projectroot'
 call plug#end()            " required
 
 let g:indent_guides_enable_on_vim_startup = 1
@@ -201,9 +183,10 @@ let g:indent_guides_start_level = 2
 let g:ag_working_path_mode="r"
 
 " fzf
-nmap <silent> <C-p> :Files<CR>
-nmap <silent> <C-f> :GFiles<CR>
-nmap <silent> <C-b> :Buffers<CR>
+nmap <silent> <leader>p :Files<CR>
+nmap <silent> <leader>f :GFiles<CR>
+nmap <silent> <leader>b :Buffers<CR>
+command! CopyBuffer let @+=expand('%:p')
 
 " ------ CtrlP configuration
 "let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
@@ -234,7 +217,7 @@ let g:UltiSnipsEditSplit="vertical"
 let g:taskwiki_markup_syntax = 'markdown'
 " ---- Java Autocomplete
 autocmd FileType java setlocal omnifunc=javacomplete#Complete
-autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
+"autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
 " Vim markdown preview Configuration
 
 let vim_markdown_preview_github=1
@@ -281,7 +264,14 @@ inoremap <silent><expr> <TAB>
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+
+ 
+
+nmap <silent> cd <Plug>(coc-definition)
+nmap <silent> cy <Plug>(coc-type-definition)
+nmap <silent> ci <Plug>(coc-implementation)
+nmap <silent> cr <Plug>(coc-references)
+
+nmap <silent> <Leader>d <Plug>(jsdoc)
+let NERDTreeShowHidden=1
+
